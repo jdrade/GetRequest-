@@ -5,13 +5,16 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.simplegetrequestexample.R;
+import com.example.simplegetrequestexample.adaptadores.AdaptadorPersonaje;
 import com.example.simplegetrequestexample.entidades.PersonajeVo;
 
 import java.util.ArrayList;
@@ -75,12 +78,38 @@ public class ListaPersonajeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View vista = inflater.inflate(R.layout.fragment_lista_personaje, container, false);
+        final View vista = inflater.inflate(R.layout.fragment_lista_personaje, container, false);
 
-        listaPersonajes = new ArrayList<>()
+        listaPersonajes = new ArrayList<>();
+        recyclerPersonajes = vista.findViewById(R.id.recyclerId);
+        recyclerPersonajes.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        llenarListaPersonajes();
+        AdaptadorPersonaje adapter = new AdaptadorPersonaje(listaPersonajes);
+        recyclerPersonajes.setAdapter(adapter);
+
+        adapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(),"Selecciona" + listaPersonajes.get(recyclerPersonajes.getChildAdapterPosition(view)).getNombre(),Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return vista;
     }
+
+    private void llenarListaPersonajes() {
+        listaPersonajes.add(new PersonajeVo("A","1st",R.drawable.a));
+        listaPersonajes.add(new PersonajeVo("B","2nd",R.drawable.b));
+        listaPersonajes.add(new PersonajeVo("C","3rd",R.drawable.c));
+        listaPersonajes.add(new PersonajeVo("D","4th",R.drawable.d));
+        listaPersonajes.add(new PersonajeVo("E","5th",R.drawable.e));
+        listaPersonajes.add(new PersonajeVo("F","6th",R.drawable.f));
+        listaPersonajes.add(new PersonajeVo("G","7th",R.drawable.g));
+        listaPersonajes.add(new PersonajeVo("H","8th",R.drawable.h));
+
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
